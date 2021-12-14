@@ -90,20 +90,18 @@ def xu_ly_transaction(transaction):
     if transaction["lenh"] == "chuyen_tien":
         chuyen_tien(transaction)
     elif transaction["lenh"] == "so_du":
-        print("{0}'s balance is: {1}".format(transaction["nguoi_gui"], so_du(transaction["nguoi_gui"])))
+        print("So du cua {0} la: {1}".format(transaction["nguoi_gui"], so_du(transaction["nguoi_gui"])))
         new_block(chain, transaction,hash(chain[-1]))
 
 
 def Subcribe():
     def connected(client):
-        print('Listening for {0} changes...'.format(Transaction_net))
         client.subscribe(Transaction_net)
 
     def subscribe(client, userdata, mid, granted_qos):
-        print('Subscribed to {0} with QoS {1}'.format(Transaction_net, granted_qos[0]))
+        print('Da ket noi thanh cong'.format(Transaction_net, granted_qos[0]))
 
     def disconnected(client):
-        print('Disconnected from Adafruit IO!')
         sys.exit(1)
 
     def message(client, Transaction_net, payload):
@@ -125,13 +123,15 @@ def Subcribe():
 chain = []
 
 if len(aio.data(Main_net)) == 0:
-    #create the first transaction
-    transaction_1 = {"lenh": "chuyen_tien", "nguoi_gui": "Tam", "nguoi_nhan": "Satoshi", "so_tien": "10"}
+    #Tao giao dich dau tien
+    transaction_1 = {"lenh": "chuyen_tien", "nguoi_gui": "Tam", "nguoi_nhan": "Bao", "so_tien": "10"}
     new_block(chain, transaction_1, previous_hash="This is the initial block that created by Bang Ngoc Bao Tam")
-
-    # second transaction
-    transaction_2 = {"lenh": "chuyen_tien", "nguoi_gui": "Tam", "nguoi_nhan": "Mike", "so_tien": "10"}
+    
+    # Tao giao dich thu hai
+    transaction_2 = {"lenh": "chuyen_tien", "nguoi_gui": "Tam", "nguoi_nhan": "An", "so_tien": "10"}
     new_block(chain, transaction_2, hash(chain[0]))
+    
+    #Sau khi giao dich nay duoc thuc hien, Bao co 10 dong va An co 10 dong. Chi co Bao va An moi co the chuyen tien trong he thong.
 else:
     for blocks in aio.data(Main_net):
         chain.append(blocks.value)
