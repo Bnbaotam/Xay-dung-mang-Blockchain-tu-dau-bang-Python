@@ -45,7 +45,7 @@ def chuyen_tien(transaction):
     if xac_thuc(transaction["nguoi_gui"], transaction["so_tien"]):
         new_block(chain, transaction, hash(chain[-1]))
     else:
-        print("Transaction {0} is not valid".format(transaction))
+        print("Giao dich {0} khong hop le".format(transaction))
 
 
 def new_block(chain, valid_transactions, previous_hash):
